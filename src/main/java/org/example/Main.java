@@ -1,17 +1,23 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.example.controller.Game;
+import org.example.controller.TicTacToeGame;
+import org.example.model.board.GameBoard;
+import org.example.model.board.TicTacToeBoard;
+import org.example.model.player.ComputerPlayer;
+import org.example.model.player.HumanPlayer;
+import org.example.model.player.Player;
+import org.example.view.ConsoleView;
+import org.example.view.GameView;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        GameBoard board = new TicTacToeBoard(3);
+        GameView view = new ConsoleView();
+        Player player1 = new HumanPlayer('X');
+        Player player2 = new ComputerPlayer('O');
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        Game ticTacToeGame = new TicTacToeGame(board, view, player1, player2);
+        ticTacToeGame.start();
     }
 }
