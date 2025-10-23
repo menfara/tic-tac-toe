@@ -1,4 +1,8 @@
 package org.example.controller;
 
-public class TicTacToeGame {
+public class TicTacToeGame implements Game {
+    @Override
+    public void start() {
+
+    }
 }
