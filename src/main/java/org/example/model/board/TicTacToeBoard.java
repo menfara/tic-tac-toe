@@ -1,6 +1,15 @@
 package org.example.model.board;
 
 public class TicTacToeBoard implements GameBoard {
+    private final int size;
+    private final char[][] board;
+    private static final char EMPTY_CELL = ' ';
+
+    public TicTacToeBoard(int size) {
+        this.size = size;
+        this.board = new char[size][size];
+        clear();
+    }
 
     @Override
     public int getSize() {
