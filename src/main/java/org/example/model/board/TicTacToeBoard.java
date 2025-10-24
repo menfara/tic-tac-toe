@@ -4,16 +4,27 @@ import org.example.exceptions.CellIsOccupiedException;
 import org.example.exceptions.InvalidBoardSizeException;
 import org.example.exceptions.InvalidCellCoordinatesException;
 
-public class TicTacToeBoard implements GameBoard {
-    private final int size;
-    private final char[][] board;
-    private static final char EMPTY_CELL = ' ';
+public class TicTacToeBoard extends GameBoard {
 
     public TicTacToeBoard(int size) {
+        super(size);
         checkBoardSizeOrThrow(size);
-        this.size = size;
-        this.board = new char[size][size];
         clear();
+    }
+
+    private void checkBoardSizeOrThrow(int size) {
+        if (size <= 1) {
+            throw new InvalidBoardSizeException("Invalid board size");
+        }
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = EMPTY_CELL;
+            }
+        }
     }
 
     @Override
@@ -41,15 +52,6 @@ public class TicTacToeBoard implements GameBoard {
     }
 
     @Override
-    public void clear() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                board[i][j] = EMPTY_CELL;
-            }
-        }
-    }
-
-    @Override
     public boolean isFull() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -61,17 +63,11 @@ public class TicTacToeBoard implements GameBoard {
         return true;
     }
 
-    private void checkBoardSizeOrThrow(int size) {
-        if (size <= 1) {
-            throw new InvalidBoardSizeException("Invalid board size");
-        }
-    }
-
     private boolean isValidCellIndexes(int row, int col) {
         return row >= 0 && row < size && col >= 0 && col < size;
     }
 
-    private void checkCellCoordinatesOrThrow(int row, int col ) {
+    private void checkCellCoordinatesOrThrow(int row, int col) {
         if (!isValidCellIndexes(row, col)) {
             throw new InvalidCellCoordinatesException("Entered invalid cell coordinates");
         }

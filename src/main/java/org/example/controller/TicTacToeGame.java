@@ -9,6 +9,7 @@ import org.example.view.GameView;
 
 @RequiredArgsConstructor
 public class TicTacToeGame implements Game {
+
     private final GameBoard board;
     private final GameView view;
     private final Player player1;
