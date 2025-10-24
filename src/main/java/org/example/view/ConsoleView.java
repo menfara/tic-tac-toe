@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.exceptions.PlayerNotExistsException;
 import org.example.model.board.GameBoard;
 import org.example.model.player.Player;
 
@@ -35,6 +36,7 @@ public class ConsoleView implements GameView {
 
     @Override
     public int[] getPlayerMove(Player player) {
+        checkExistsPlayerOrThrow(player);
         while (true) {
             try {
                 System.out.printf("Player '%c', enter a cell number (1-9): ", player.getMark());
@@ -58,6 +60,7 @@ public class ConsoleView implements GameView {
 
     @Override
     public void displayWinner(Player winner) {
+        checkExistsPlayerOrThrow(winner);
         System.out.printf("Congratulations! Player '%c' wins!%n", winner.getMark());
     }
 
@@ -80,5 +83,11 @@ public class ConsoleView implements GameView {
 
     private int mapCoordsToNumber(int row, int col) {
         return row * 3 + col + 1;
+    }
+
+    private void checkExistsPlayerOrThrow(Player player) {
+        if (player == null) {
+            throw new PlayerNotExistsException("Player is null");
+        }
     }
 }
