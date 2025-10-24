@@ -1,6 +1,7 @@
 package org.example.model.board;
 
 public class TicTacToeBoard implements GameBoard {
+
     private final int size;
     private final char[][] board;
     private static final char EMPTY_CELL = ' ';

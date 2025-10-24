@@ -4,6 +4,7 @@ import org.example.model.board.GameBoard;
 import org.example.model.player.Player;
 
 public interface GameView {
+
     void renderBoard(GameBoard board);
 
     void displayWelcomeMessage();
@@ -17,4 +18,5 @@ public interface GameView {
     void displayInvalidMove();
 
     void displayComputerMove(int[] move);
+
 }

@@ -1,6 +1,7 @@
 package org.example.model.board;
 
 public interface GameBoard {
+
     int getSize();
 
     boolean isCellEmpty(int row, int col);
@@ -12,4 +13,5 @@ public interface GameBoard {
     void clear();
 
     boolean isFull();
+
 }
