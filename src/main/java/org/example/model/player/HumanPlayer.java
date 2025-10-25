@@ -7,6 +7,7 @@ import org.example.model.board.GameBoard;
 @RequiredArgsConstructor
 @Getter
 public class HumanPlayer implements Player {
+
     private final char mark;
 
     @Override

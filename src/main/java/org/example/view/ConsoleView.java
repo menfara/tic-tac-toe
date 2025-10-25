@@ -7,7 +7,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleView implements GameView {
-    private static final int MIN_CELL = 1;
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -19,38 +18,16 @@ public class ConsoleView implements GameView {
     @Override
     public void renderBoard(GameBoard board) {
         System.out.println();
-        int size = board.getSize();
-        String separator = buildSeparator(size);
-
-        for (int i = 0; i < size; i++) {
-            printRow(board, i);
-            if (i < size - 1) {
-                System.out.println(separator);
+        for (int i = 0; i < board.getSize(); i++) {
+            for (int j = 0; j < board.getSize(); j++) {
+                System.out.print(" " + board.getMarkAt(i, j) + " ");
+                if (j < board.getSize() - 1) {
+                    System.out.print("|");
+                }
             }
-        }
-        System.out.println();
-    }
-
-    private String buildSeparator(int size) {
-        StringBuilder separator = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            separator.append("---");
-            if (i < size - 1) {
-                separator.append("+");
-            }
-        }
-        return separator.toString();
-    }
-
-    private void printRow(GameBoard board, int row) {
-        int size = board.getSize();
-        for (int col = 0; col < size; col++) {
-            char mark = board.getMarkAt(row, col);
-            String cell = (mark == ' ') ? String.valueOf(mapCoordsToNumber(row, col)) : String.valueOf(mark);
-            System.out.print(" " + cell + " ");
-
-            if (col < size - 1) {
-                System.out.print("|");
+            System.out.println();
+            if (i < board.getSize() - 1) {
+                System.out.println("---+---+---");
             }
         }
         System.out.println();
@@ -58,33 +35,17 @@ public class ConsoleView implements GameView {
 
     @Override
     public int[] getPlayerMove(Player player) {
-        Integer cellNumber = null;
-
-        while (cellNumber == null) {
-            System.out.printf("Player '%c', enter a cell number (%d-%d): ",
-                    player.getMark(), MIN_CELL, getMaxCell());
-            cellNumber = readCellNumber();
-        }
-
-        return mapNumberToCoords(cellNumber);
-    }
-
-    private Integer readCellNumber() {
-        try {
-            int input = scanner.nextInt();
-            if (input >= MIN_CELL && input <= getMaxCell()) {
-                return input;
+        while (true) {
+            try {
+                System.out.printf("Player '%c', enter your move (row and column, e.g., 1 2): ", player.getMark());
+                int row = scanner.nextInt() - 1;
+                int col = scanner.nextInt() - 1;
+                return new int[]{row, col};
+            } catch (InputMismatchException e) {
+                System.out.println("Error! Please enter two numbers separated by a space.");
+                scanner.nextLine();
             }
-            System.out.printf("Error! Please enter a number between %d and %d.%n", MIN_CELL, getMaxCell());
-        } catch (InputMismatchException e) {
-            System.out.println("Error! Input must be a number.");
-            scanner.nextLine();
         }
-        return null;
-    }
-
-    private int getMaxCell() {
-        return 9; // Для стандартной доски 3x3
     }
 
     @Override
@@ -104,17 +65,6 @@ public class ConsoleView implements GameView {
 
     @Override
     public void displayComputerMove(int[] move) {
-        System.out.printf("Computer moved to cell %d.%n", mapCoordsToNumber(move[0], move[1]));
-    }
-
-    private int[] mapNumberToCoords(int number) {
-        int zeroBased = number - 1;
-        int row = zeroBased / 3;
-        int col = zeroBased % 3;
-        return new int[]{row, col};
-    }
-
-    private int mapCoordsToNumber(int row, int col) {
-        return row * 3 + col + 1;
+        System.out.printf("Computer moved to position (%d, %d).%n", move[0] + 1, move[1] + 1);
     }
 }
