@@ -9,6 +9,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Getter
 public class ComputerPlayer implements Player {
+
     private final char mark;
     private final Random random = new Random();
 

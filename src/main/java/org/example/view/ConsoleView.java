@@ -7,6 +7,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleView implements GameView {
+    private static final int MIN_CELL = 1;
+
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
@@ -17,38 +19,72 @@ public class ConsoleView implements GameView {
     @Override
     public void renderBoard(GameBoard board) {
         System.out.println();
-        for (int i = 0; i < board.getSize(); i++) {
-            for (int j = 0; j < board.getSize(); j++) {
-                char mark = board.getMarkAt(i, j);
-                if (mark == ' ') {
-                    System.out.print(" " + mapCoordsToNumber(i, j) + " ");
-                } else {
-                    System.out.print(" " + mark + " ");
-                }
-                if (j < board.getSize() - 1) System.out.print("|");
+        int size = board.getSize();
+        String separator = buildSeparator(size);
+
+        for (int i = 0; i < size; i++) {
+            printRow(board, i);
+            if (i < size - 1) {
+                System.out.println(separator);
             }
-            System.out.println();
-            if (i < board.getSize() - 1) System.out.println("---+---+---");
+        }
+        System.out.println();
+    }
+
+    private String buildSeparator(int size) {
+        StringBuilder separator = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            separator.append("---");
+            if (i < size - 1) {
+                separator.append("+");
+            }
+        }
+        return separator.toString();
+    }
+
+    private void printRow(GameBoard board, int row) {
+        int size = board.getSize();
+        for (int col = 0; col < size; col++) {
+            char mark = board.getMarkAt(row, col);
+            String cell = (mark == ' ') ? " " : String.valueOf(mark);
+            System.out.print(" " + cell + " ");
+
+            if (col < size - 1) {
+                System.out.print("|");
+            }
         }
         System.out.println();
     }
 
     @Override
     public int[] getPlayerMove(Player player) {
-        while (true) {
-            try {
-                System.out.printf("Player '%c', enter a cell number (1-9): ", player.getMark());
-                int cellNumber = scanner.nextInt();
-                if (cellNumber >= 1 && cellNumber <= 9) {
-                    return mapNumberToCoords(cellNumber);
-                } else {
-                    System.out.println("Error! Please enter a number between 1 and 9.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Error! Input must be a number.");
-                scanner.nextLine();
-            }
+        Integer cellNumber = null;
+
+        while (cellNumber == null) {
+            System.out.printf("Player '%c', enter a cell number (%d-%d): ",
+                    player.getMark(), MIN_CELL, getMaxCell());
+            cellNumber = readCellNumber();
         }
+
+        return mapNumberToCoords(cellNumber);
+    }
+
+    private Integer readCellNumber() {
+        try {
+            int input = scanner.nextInt();
+            if (input >= MIN_CELL && input <= getMaxCell()) {
+                return input;
+            }
+            System.out.printf("Error! Please enter a number between %d and %d.%n", MIN_CELL, getMaxCell());
+        } catch (InputMismatchException e) {
+            System.out.println("Error! Input must be a number.");
+            scanner.nextLine();
+        }
+        return null;
+    }
+
+    private int getMaxCell() {
+        return 9; // Для стандартной доски 3x3
     }
 
     @Override
