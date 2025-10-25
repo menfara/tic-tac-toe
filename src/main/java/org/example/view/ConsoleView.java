@@ -46,7 +46,7 @@ public class ConsoleView implements GameView {
         int size = board.getSize();
         for (int col = 0; col < size; col++) {
             char mark = board.getMarkAt(row, col);
-            String cell = (mark == ' ') ? String.valueOf(mapCoordsToNumber(row, col)) : String.valueOf(mark);
+            String cell = (mark == ' ') ? " " : String.valueOf(mark);
             System.out.print(" " + cell + " ");
 
             if (col < size - 1) {
