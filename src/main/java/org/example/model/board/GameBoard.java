@@ -1,17 +1,25 @@
 package org.example.model.board;
 
-public interface GameBoard {
+public abstract class GameBoard {
 
-    int getSize();
+    public static final char EMPTY_CELL = ' ';
+    protected final int size;
+    protected final char[][] board;
 
-    boolean isCellEmpty(int row, int col);
+    public GameBoard(int size) {
+        this.size = size;
+        this.board = new char[size][size];
+    }
 
-    void placeMark(int row, int col, char playerMark);
+    public abstract int getSize();
 
-    char getMarkAt(int row, int col);
+    public abstract boolean isCellEmpty(int row, int col);
 
-    void clear();
+    public abstract void placeMark(int row, int col, char playerMark);
 
-    boolean isFull();
+    public abstract char getMarkAt(int row, int col);
 
+    public abstract void clear();
+
+    public abstract boolean isFull();
 }
